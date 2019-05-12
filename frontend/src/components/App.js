@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import './App.css';
 import { handleInitialData } from "../actions/shared";
-import Navbar from "./Navbar";
+import NewPost from './NewPost';
+import Posts from './Posts';
 
 class App extends Component {
   componentDidMount() {
@@ -11,9 +13,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Navbar/>
-      </div>
+      <Router>
+        <Fragment>
+            <Route path='/:category?/:id?' component={Posts} />
+            <Route path='/new/:id?' exact component={NewPost} />
+        </Fragment>
+      </Router>
     );
   }
 }
