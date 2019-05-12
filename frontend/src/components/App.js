@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from "react-redux";
 import './App.css';
+import { handleInitialData } from "../actions/shared";
+import Navbar from "./Navbar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        Hello world
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    this.props.handleInitialData();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Navbar/>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = ({ categories }) => ({
+    categories: categories
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  handleInitialData: () => dispatch(handleInitialData())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
