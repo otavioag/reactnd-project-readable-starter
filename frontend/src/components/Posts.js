@@ -1,16 +1,45 @@
 import React, { Component } from 'react';
-import Navbar from "./Navbar";
+import Post from './Post';
+import { connect } from "react-redux";
+import { fetchPosts } from "../actions/posts";
 
 class Posts extends Component {
+  componentDidMount() {
+    this.props.fetchPosts().then(() => {
+      this.setState((state, props) => ({
+        ...state,
+        posts: props.category === 'home'
+          ? props.posts
+          : props.posts.filter(post => post.category === props.category)
+      }));
+    });
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.setState((state, props) => ({
+      ...state,
+      posts: nextProps.category === 'home'
+        ? props.posts
+        : props.posts.filter(post => post.category === nextProps.category)
+    }));
+  }
+
   render() {
-    if (this.props.match.params.category === 'new') return null;
     return (
-      <div>
-        <Navbar category={this.props.match.params.category}/>
-        posts  {this.props.match.params.id}
+      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        posts { this.props.category} {this.test}
+        {this.state !== null && this.state.posts !== null ? this.state.posts.map((post) => (<Post key={post.id} post={post}/>)) : ''}
       </div>
     );
   }
 }
 
-export default Posts;
+const mapStateToProps = ({ posts }) => ({
+  posts: posts
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchPosts: () => dispatch(fetchPosts())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

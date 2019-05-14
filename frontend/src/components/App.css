@@ -1,1 +1,9 @@
 @import "~antd/dist/antd.css";
+
+.ant-comment-inner {
+    padding: 0;
+}
+
+.ant-comment-actions {
+    margin-bottom: 0;
+}

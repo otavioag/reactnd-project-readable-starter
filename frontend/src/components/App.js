@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import './App.css';
 import { handleInitialData } from "../actions/shared";
 import NewPost from './NewPost';
-import Posts from './Posts';
+import PostsPage from './PostsPage';
 
 class App extends Component {
   componentDidMount() {
@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
-            <Route path='/:category?/:id?' component={Posts} />
+            <Route path='/:category?/:id?' component={PostsPage} />
             <Route path='/new/:id?' exact component={NewPost} />
         </Fragment>
       </Router>
