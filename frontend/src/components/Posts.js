@@ -27,8 +27,8 @@ class Posts extends Component {
   render() {
     return (
       <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-        posts { this.props.category} {this.test}
-        {this.state !== null && this.state.posts !== null ? this.state.posts.map((post) => (<Post key={post.id} post={post}/>)) : ''}
+        posts { this.props.category} {this.props.id}
+        {this.state !== null && this.state.posts !== null && this.state.posts.map((post) => (<Post key={post.id} post={post}/>))}
       </div>
     );
   }

@@ -2,11 +2,32 @@ import React, { Component } from 'react';
 import { Card, Comment, Icon, Tooltip } from 'antd';
 import { fetchComments } from "../actions/comments";
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
+import PostComments from "./PostComments";
 
 class Post extends Component {
+
+  state =  {
+    showComments: false
+  };
+
   componentDidMount() {
     this.props.fetchComments(this.props.post.id);
   }
+
+  like = (e) => {
+    e.preventDefault();
+    console.log('e');
+    e.stopPropagation();
+  };
+
+  toggleComments = (e) => {
+    e.preventDefault();
+    this.setState({
+      ...this.state,
+      showComments: !this.state.showComments
+    });
+  };
 
   render() {
     const { voteScore } = this.props.post;
@@ -34,25 +55,46 @@ class Post extends Component {
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{voteScore}</span>
       </span>,
       <span>
-        <Tooltip title='Show comments'>
+        <Tooltip title={this.state.showComments ? 'Hide comments' : 'Show comments'}>
           <Icon
             type='message'
             theme='outlined'
-            onClick={this.dislike}
+            onClick={this.toggleComments}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{commentNumber}</span>
+      </span>,
+      <span>
+        <Tooltip title='Edit'>
+          <Icon
+            type='edit'
+            theme='outlined'
+            onClick={this.like}
+          />
+        </Tooltip>
+        <span style={{paddingLeft: 8}}/>
+        <Tooltip title='Delete'>
+          <Icon
+            type='delete'
+            theme='outlined'
+            onClick={this.like}
+          />
+        </Tooltip>
       </span>
     ];
 
     return (
-      <Card style={{ width: '80%', marginTop: '20px'}}>
+      <Card className='card-post' style={{ width: '80%', marginTop: '20px'}}>
+        <Link to={`${this.props.post.category}/${this.props.post.id}`}>
         <Comment
+          className='post'
           actions={actions}
           author={this.props.post.author}
           content={this.props.post.body}
           datetime={this.props.post.timestamp}
         />
+        </Link>
+        {this.state.showComments && (<PostComments comments={this.props.post.comments}/>)}
       </Card>
     );
   }

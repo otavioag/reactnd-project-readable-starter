@@ -6,4 +6,31 @@
 
 .ant-comment-actions {
     margin-bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.ant-card-body > a {
+    color: rgba(0,0,0,0.65);
+}
+
+.card-post > .ant-card-body {
+    padding: 0;
+}
+
+.ant-comment.post {
+    padding: 24px;
+}
+
+.ant-comment.comment {
+    padding: 12px 48px;
+}
+
+.ant-comment-actions > li:nth-child(4) {
+    margin-left: auto;
+}
+
+.ant-divider {
+    margin-top: 0 !important;
 }

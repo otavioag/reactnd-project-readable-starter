@@ -8,7 +8,10 @@ class PostsPage extends Component {
     return (
       <div>
         <Navbar category={this.props.match.params.category}/>
-        <Posts category={this.props.match.params.category === undefined ? 'home' : this.props.match.params.category} />
+        <Posts
+          category={this.props.match.params.category === undefined ? 'home' : this.props.match.params.category}
+          id={this.props.match.params.id}
+        />
       </div>
     );
   }
