@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Card, Comment, Icon, Tooltip } from 'antd';
-import { fetchComments } from "../actions/comments";
-import { connect } from "react-redux";
+import { fetchComments } from '../actions/comments';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PostComments from "./PostComments";
+import PostComments from './PostComments';
+import Editor from './Editor';
+import { updatePost } from '../actions/posts';
 
 class Post extends Component {
 
   state =  {
-    showComments: false
+    showComments: false,
+    editMode: false,
+    loading: false,
+    title: this.props.post.title,
+    body: this.props.post.body
   };
 
   componentDidMount() {
@@ -26,6 +32,44 @@ class Post extends Component {
     this.setState({
       ...this.state,
       showComments: !this.state.showComments
+    });
+  };
+
+  toggleEdit = (e) => {
+    e.preventDefault();
+    this.setState({
+      ...this.state,
+      editMode: !this.state.editMode,
+      title: this.props.post.title,
+      body: this.props.post.body
+    });
+  };
+
+  submitEdition = () => {
+    this.setState({
+      ...this.state,
+      loading: true
+    },() => {
+      this.props.updatePost(this.props.post.id, this.state.title, this.state.body);
+      this.setState({
+        ...this.state,
+        loading: false,
+        editMode: false
+      });
+    });
+  };
+
+  onChangeTitle = (e) => {
+    this.setState({
+      ...this.state,
+      title: e.target.value
+    })
+  };
+
+  onChangeBody = (e) => {
+    this.setState({
+      ...this.state,
+      body: e.target.value
     });
   };
 
@@ -69,7 +113,7 @@ class Post extends Component {
           <Icon
             type='edit'
             theme='outlined'
-            onClick={this.like}
+            onClick={this.toggleEdit}
           />
         </Tooltip>
         <span style={{paddingLeft: 8}}/>
@@ -83,17 +127,41 @@ class Post extends Component {
       </span>
     ];
 
+    const post = (
+      <Comment
+        className='post'
+        actions={actions}
+        author={this.props.post.author}
+        content={this.state.editMode
+          ? <Editor
+            isPost
+            title={this.state.title}
+            body={this.state.body}
+            onSubmit={this.submitEdition}
+            onChangeTitle={this.onChangeTitle}
+            onChangeBody={this.onChangeBody}
+            onCancel={this.toggleEdit}
+          />
+          : (
+            <div>
+              <h3>{this.props.post.title}</h3>
+              <div>{this.props.post.body}</div>
+            </div>
+          )}
+        datetime={this.props.post.timestamp}
+      />
+    );
+
     return (
       <Card className='card-post' style={{ width: '80%', marginTop: '20px'}}>
-        <Link to={`${this.props.post.category}/${this.props.post.id}`}>
-        <Comment
-          className='post'
-          actions={actions}
-          author={this.props.post.author}
-          content={this.props.post.body}
-          datetime={this.props.post.timestamp}
-        />
-        </Link>
+        {this.state.editMode
+          ? <div>{post}</div>
+          : (
+            <Link to={`${this.props.post.category}/${this.props.post.id}`}>
+              {post}
+            </Link>
+          )
+        }
         {this.state.showComments && (<PostComments comments={this.props.post.comments}/>)}
       </Card>
     );
@@ -101,7 +169,8 @@ class Post extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchComments: (postId) => dispatch(fetchComments(postId))
+  fetchComments: (postId) => dispatch(fetchComments(postId)),
+  updatePost: (postId, title, body) => dispatch(updatePost(postId, title, body))
 });
 
 export default connect(null, mapDispatchToProps)(Post);

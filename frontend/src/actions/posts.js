@@ -1,8 +1,9 @@
-import { getPosts } from "../utils/api";
-import { showLoading, hideLoading } from "react-redux-loading";
+import { getPosts, updatePost as updPost } from '../utils/api';
+import { showLoading, hideLoading } from 'react-redux-loading';
 
-export const SET_POSTS = "SET_POSTS";
-export const SET_POST_COMMENTS = "SET_POST_COMMENTS";
+export const SET_POSTS = 'SET_POSTS';
+export const SET_POST_COMMENTS = 'SET_POST_COMMENTS';
+export const UPDATE_POST = 'UPDATE_POST';
 
 export function fetchPosts() {
   return (dispatch) => {
@@ -27,5 +28,15 @@ export function setPostComments(postId, comments) {
     type: SET_POST_COMMENTS,
     postId,
     comments
+  };
+}
+
+export function updatePost(postId, title, body) {
+  updPost(postId, title, body);
+  return {
+    type: UPDATE_POST,
+    postId,
+    title,
+    body
   };
 }

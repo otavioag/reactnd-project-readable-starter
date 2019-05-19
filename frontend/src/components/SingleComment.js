@@ -1,7 +1,47 @@
 import React, { Component } from 'react';
-import {Comment, Icon, Tooltip} from "antd";
+import { Comment, Icon, Tooltip } from 'antd';
+import Editor from './Editor';
+import { connect } from 'react-redux';
+import { updateComment } from '../actions/comments';
 
 class SingleComment extends Component {
+
+  state = {
+    editMode: false,
+    loading: false,
+    body: this.props.comment.body
+  };
+
+  toggleEdit = (e) => {
+    e.preventDefault();
+    this.setState({
+      ...this.state,
+      editMode: !this.state.editMode,
+      body: this.props.comment.body
+    });
+  };
+
+  submitEdition = () => {
+    this.setState({
+      ...this.state,
+      loading: true
+    },() => {
+      this.props.updateComment(this.props.comment.id, this.props.comment.parentId, this.state.body);
+      this.setState({
+        ...this.state,
+        loading: false,
+        editMode: false
+      });
+    });
+  };
+
+  onChangeBody = (e) => {
+    this.setState({
+      ...this.state,
+      body: e.target.value
+    });
+  };
+
   render() {
     const { voteScore } = this.props.comment;
     const action = 'none';
@@ -33,7 +73,7 @@ class SingleComment extends Component {
           <Icon
             type='edit'
             theme='outlined'
-            onClick={this.like}
+            onClick={this.toggleEdit}
           />
         </Tooltip>
         <span style={{paddingLeft: 8}}/>
@@ -52,11 +92,23 @@ class SingleComment extends Component {
         className='comment'
         actions={actions}
         author={this.props.comment.author}
-        content={this.props.comment.body}
+        content={this.state.editMode
+          ? <Editor
+            isPost={false}
+            body={this.state.body}
+            onSubmit={this.submitEdition}
+            onChangeBody={this.onChangeBody}
+            onCancel={this.toggleEdit}
+          />
+          : this.props.comment.body}
         datetime={this.props.comment.timestamp}
       />
     );
   }
 }
 
-export default SingleComment;
+const mapDispatchToProps = (dispatch) => ({
+  updateComment: (commentId, parentId, body) => dispatch(updateComment(commentId, parentId, body))
+});
+
+export default connect(null, mapDispatchToProps)(SingleComment);

@@ -1,4 +1,5 @@
-import { SET_POSTS, SET_POST_COMMENTS } from "../actions/posts";
+import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST } from '../actions/posts';
+import { UPDATE_COMMENT } from '../actions/comments';
 
 export default function posts(state = {}, action) {
   switch (action.type) {
@@ -18,6 +19,32 @@ export default function posts(state = {}, action) {
               ...comment,
               timestamp: new Date(comment.timestamp).toLocaleString()
             }))
+          }
+          : post
+      ));
+    case UPDATE_POST:
+      return state.map(post => (
+        post.id === action.postId
+          ? {
+            ...post,
+            title: action.title,
+            body: action.body
+          }
+          : post
+      ));
+    case UPDATE_COMMENT:
+      return state.map(post => (
+        post.id === action.parentId
+          ? {
+            ...post,
+            comments: post.comments.map(comment => (
+              comment.id === action.commentId
+              ? {
+                  ...comment,
+                  body: action.body
+                }
+              : comment
+            ))
           }
           : post
       ));
