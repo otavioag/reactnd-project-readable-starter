@@ -1,24 +1,18 @@
-import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST } from '../actions/posts';
+import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST, SORT_POSTS } from '../actions/posts';
 import { SAVE_COMMENT, UPDATE_COMMENT } from '../actions/comments';
 
 export default function posts(state = {}, action) {
   switch (action.type) {
     case SET_POSTS:
       return [
-        ...action.posts.map(post =>({
-          ...post,
-          timestamp: new Date(post.timestamp).toLocaleString()
-        }))
+        ...action.posts.filter(post => !post.deleted)
       ];
     case SET_POST_COMMENTS:
       return state.map(post => (
         post.id === action.postId
           ? {
             ...post,
-            comments: action.comments.map(comment => ({
-              ...comment,
-              timestamp: new Date(comment.timestamp).toLocaleString()
-            }))
+            comments: action.comments.filter(comment => !comment.deleted)
           }
           : post
       ));
@@ -53,13 +47,18 @@ export default function posts(state = {}, action) {
         post.id === action.comment.parentId
           ? {
             ...post,
-            comments: post.comments.concat({
-              ...action.comment,
-              timestamp: new Date(action.comment.timestamp).toLocaleString()
-            })
+            comments: post.comments.concat(action.comment)
           }
           : post
       ));
+    case SORT_POSTS:
+      let sorted;
+      if (action.sortBy === 'date') {
+        sorted = state.sort((a, b) => (a.timestamp - b.timestamp));
+      } else if (action.sortBy === 'vote') {
+        sorted = state.sort((a, b) => (a.voteScore - b.voteScore));
+      }
+      return action.sortOrder === 'asc' ? sorted : sorted.reverse();
     default:
       return state;
   }

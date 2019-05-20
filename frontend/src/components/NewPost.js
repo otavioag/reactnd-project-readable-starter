@@ -69,6 +69,7 @@ class NewPost extends Component {
       <div>
         <Navbar category='new'/>
         <div style={{padding: "16px 10vw"}}>
+          <h1>New Post</h1>
           <Select placeholder='Select Category' style={{ width: 150 }} onChange={this.onChangeCategory}>
             {this.props.categories.length > 0 && this.props.categories.map(category =>
               <Select.Option key={category.name} value={category.name}>{category.name}</Select.Option>

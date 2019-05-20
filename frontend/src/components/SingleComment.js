@@ -102,7 +102,7 @@ class SingleComment extends Component {
             loading={this.state.loading}
           />
           : this.props.comment.body}
-        datetime={this.props.comment.timestamp}
+        datetime={new Date(this.props.comment.timestamp).toLocaleString()}
       />
     );
   }

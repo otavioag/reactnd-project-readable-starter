@@ -149,13 +149,13 @@ class Post extends Component {
               <div>{this.props.post.body}</div>
             </div>
           )}
-        datetime={this.props.post.timestamp}
+        datetime={new Date(this.props.post.timestamp).toLocaleString()}
       />
     );
 
     return (
       <Card className='card-post' style={{ width: '80%', marginTop: '20px'}}>
-        {this.state.editMode
+        {(this.state.editMode || this.props.disableClick)
           ? <div>{post}</div>
           : (
             <Link to={`/${this.props.post.category}/${this.props.post.id}`}>

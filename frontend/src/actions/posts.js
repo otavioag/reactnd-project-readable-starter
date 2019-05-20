@@ -4,6 +4,7 @@ import { showLoading, hideLoading } from 'react-redux-loading';
 export const SET_POSTS = 'SET_POSTS';
 export const SET_POST_COMMENTS = 'SET_POST_COMMENTS';
 export const UPDATE_POST = 'UPDATE_POST';
+export const SORT_POSTS = 'SORT_POSTS';
 
 export function fetchPosts() {
   return (dispatch) => {
@@ -38,5 +39,16 @@ export function updatePost(postId, title, body) {
     postId,
     title,
     body
+  };
+}
+
+export function sortPosts(sortBy, sortOrder) {
+  return (dispatch) => {
+    dispatch({
+      type: SORT_POSTS,
+        sortBy,
+        sortOrder
+    });
+    return Promise.resolve();
   };
 }
