@@ -1,5 +1,5 @@
 import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST } from '../actions/posts';
-import { UPDATE_COMMENT } from '../actions/comments';
+import { SAVE_COMMENT, UPDATE_COMMENT } from '../actions/comments';
 
 export default function posts(state = {}, action) {
   switch (action.type) {
@@ -45,6 +45,18 @@ export default function posts(state = {}, action) {
                 }
               : comment
             ))
+          }
+          : post
+      ));
+    case SAVE_COMMENT:
+      return state.map(post => (
+        post.id === action.comment.parentId
+          ? {
+            ...post,
+            comments: post.comments.concat({
+              ...action.comment,
+              timestamp: new Date(action.comment.timestamp).toLocaleString()
+            })
           }
           : post
       ));

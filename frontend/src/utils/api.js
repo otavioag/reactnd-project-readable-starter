@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid/v4');
+
 export function getCategories() {
   return fetch(
     "http://localhost:3001/categories",
@@ -51,4 +53,24 @@ export function updateComment(id, body) {
       })
     }
   );
+}
+
+export function createComment(comment) {
+  return fetch(
+    "http://localhost:3001/comments",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "dummy",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: uuidv4(),
+        timestamp: Date.now(),
+        body: comment.body,
+        author: comment.author,
+        parentId: comment.parentId
+      })
+    }
+  ).then(data => data.json());
 }

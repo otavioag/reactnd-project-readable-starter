@@ -10,7 +10,7 @@ class Editor extends Component {
           <Input.TextArea rows={3} onChange={this.props.onChangeBody} value={this.props.body} />
         </Form.Item>
         <Form.Item>
-          <Button htmlType='submit' loading={this.props.submitting} onClick={this.props.onSubmit} type='primary'>
+          <Button htmlType='submit' loading={this.props.loading} onClick={this.props.onSubmit} type='primary'>
             Save
           </Button>
           <Button htmlType='button' style={{marginLeft: "16px"}} onClick={this.props.onCancel} type='secondary'>

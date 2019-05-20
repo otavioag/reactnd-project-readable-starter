@@ -141,6 +141,7 @@ class Post extends Component {
             onChangeTitle={this.onChangeTitle}
             onChangeBody={this.onChangeBody}
             onCancel={this.toggleEdit}
+            loading={this.state.loading}
           />
           : (
             <div>
@@ -157,12 +158,12 @@ class Post extends Component {
         {this.state.editMode
           ? <div>{post}</div>
           : (
-            <Link to={`${this.props.post.category}/${this.props.post.id}`}>
+            <Link to={`/${this.props.post.category}/${this.props.post.id}`}>
               {post}
             </Link>
           )
         }
-        {this.state.showComments && (<PostComments comments={this.props.post.comments}/>)}
+        {this.state.showComments && (<PostComments comments={this.props.post.comments} parentId={this.props.post.id}/>)}
       </Card>
     );
   }

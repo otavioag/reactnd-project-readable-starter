@@ -99,6 +99,7 @@ class SingleComment extends Component {
             onSubmit={this.submitEdition}
             onChangeBody={this.onChangeBody}
             onCancel={this.toggleEdit}
+            loading={this.state.loading}
           />
           : this.props.comment.body}
         datetime={this.props.comment.timestamp}
