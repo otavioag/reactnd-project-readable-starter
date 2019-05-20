@@ -74,3 +74,24 @@ export function createComment(comment) {
     }
   ).then(data => data.json());
 }
+
+export function createPost(post) {
+  return fetch(
+    "http://localhost:3001/posts",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "dummy",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: uuidv4(),
+        timestamp: Date.now(),
+        title: post.title,
+        body: post.body,
+        author: post.author,
+        category: post.category
+      })
+    }
+  ).then(data => data.json());
+}

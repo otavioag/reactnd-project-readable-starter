@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Input } from 'antd';
+import {Form, Button, Input, notification} from 'antd';
 import { connect } from 'react-redux';
 import { createComment } from '../actions/comments';
 
@@ -25,6 +25,11 @@ class NewComment extends Component {
           body: '',
           loading: false
         });
+      });
+    } else {
+      notification.open({
+        message: 'Error!',
+        description: 'The comment field is empty!'
       });
     }
   };
