@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { connect } from "react-redux";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './App.css';
-import { handleInitialData } from "../actions/shared";
+import { handleInitialData } from '../actions/shared';
 import NewPost from './NewPost';
 import PostsPage from './PostsPage';
 

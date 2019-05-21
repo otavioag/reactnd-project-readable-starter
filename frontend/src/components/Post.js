@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, Comment, Icon, Tooltip, Popconfirm, notification} from 'antd';
+import { Card, Comment, Icon, Tooltip, Popconfirm, notification } from 'antd';
 import { fetchComments } from '../actions/comments';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';

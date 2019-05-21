@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   render() {
     return (
-      <div className="Navbar">
+      <div className='Navbar'>
         <Menu
-          mode="horizontal"
+          mode='horizontal'
           selectedKeys={[this.props.category === undefined ? 'home' : this.props.category]}
         >
-            <Menu.Item key="home">
+            <Menu.Item key='home'>
               <Link to='/'>
-                <Icon type="home" /> Home
+                <Icon type='home' /> Home
               </Link>
             </Menu.Item>
           {this.props.categories.length > 0 ? this.props.categories.map(category => (
