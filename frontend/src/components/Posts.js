@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Post from './Post';
-import { connect } from "react-redux";
-import { fetchPosts } from "../actions/posts";
-import Menu from "./Menu";
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions/posts';
+import Menu from './Menu';
 
 class Posts extends Component {
   componentDidMount() {
@@ -41,7 +41,7 @@ class Posts extends Component {
         <Menu hide={this.props.id !== undefined} updateSort={this.updateSort}/>
         {this.props.id !== undefined && this.state !== null && this.state.posts.length === 0 && <h1 style={{marginTop: "50px"}}>Post not found!</h1>}
         {this.state !== null && this.state.posts !== null && this.state.posts.map((post) => (<Post key={post.id} post={post} disableClick={this.props.id !== undefined}/>))}
-        {this.state !== null && this.state.posts.length === 0 && <h1 style={{marginTop: "50px"}}>No posts in this category yet</h1>}
+        {this.state !== null && this.state.posts.length === 0 && <h1 style={{marginTop: "50px"}}>No posts here yet</h1>}
       </div>
     );
   }

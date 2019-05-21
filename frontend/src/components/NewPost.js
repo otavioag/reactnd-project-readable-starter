@@ -15,7 +15,6 @@ class NewPost extends Component {
 
   onSubmit = () => {
     if (this.state.body !== '' && this.state.title !== '' && this.state.category !== '') {
-      console.log(this.state);
       this.setState({
         ...this.state,
         loading: true

@@ -1,10 +1,12 @@
-import { getComments, createComment as crtComment, vote } from '../utils/api';
+import { getComments, createComment as crtComment, vote, del } from '../utils/api';
 import { updateComment as updComment } from '../utils/api';
 import { setPostComments } from './posts';
+import { hideLoading, showLoading } from 'react-redux-loading';
 
 export const UPDATE_COMMENT = 'UPDATE_COMMENT';
 export const SAVE_COMMENT = 'SAVE_COMMENT';
 export const VOTE_COMMENT = 'VOTE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 export function fetchComments(postId) {
   return (dispatch) => {
@@ -52,4 +54,19 @@ export function voteComment(commentId, parentId, option) {
     parentId,
     option
   }
+}
+
+export function deleteComment(commentId, parentId) {
+  return (dispatch) => {
+    dispatch(showLoading());
+    return del('comments', commentId)
+      .then(() => {
+        dispatch({
+          type: DELETE_COMMENT,
+          commentId: commentId,
+          parentId: parentId
+        });
+        dispatch(hideLoading());
+      });
+  };
 }

@@ -1,11 +1,13 @@
 import { getPosts, updatePost as updPost, vote } from '../utils/api';
 import { showLoading, hideLoading } from 'react-redux-loading';
+import { del } from '../utils/api';
 
 export const SET_POSTS = 'SET_POSTS';
 export const SET_POST_COMMENTS = 'SET_POST_COMMENTS';
 export const UPDATE_POST = 'UPDATE_POST';
 export const SORT_POSTS = 'SORT_POSTS';
 export const VOTE_POST = 'VOTE_POST';
+export const DELETE_POST = 'DELETE_POST';
 
 export function fetchPosts() {
   return (dispatch) => {
@@ -61,4 +63,18 @@ export function votePost(postId, option) {
     postId,
     option
   }
+}
+
+export function deletePost(postId) {
+  return (dispatch) => {
+    dispatch(showLoading());
+    return del('posts', postId)
+      .then(() => {
+        dispatch({
+          type: DELETE_POST,
+          postId
+        });
+        dispatch(hideLoading());
+      });
+  };
 }

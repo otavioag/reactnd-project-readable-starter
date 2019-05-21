@@ -1,5 +1,5 @@
-import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST, SORT_POSTS, VOTE_POST } from '../actions/posts';
-import { SAVE_COMMENT, UPDATE_COMMENT, VOTE_COMMENT } from '../actions/comments';
+import { SET_POSTS, SET_POST_COMMENTS, UPDATE_POST, SORT_POSTS, VOTE_POST, DELETE_POST } from '../actions/posts';
+import { DELETE_COMMENT, SAVE_COMMENT, UPDATE_COMMENT, VOTE_COMMENT } from '../actions/comments';
 
 export default function posts(state = {}, action) {
   switch (action.type) {
@@ -80,6 +80,17 @@ export default function posts(state = {}, action) {
                 }
                 : comment
             ))
+          }
+          : post
+      ));
+    case DELETE_POST:
+      return state.filter(post => post.id !== action.postId);
+    case DELETE_COMMENT:
+      return state.map(post => (
+        post.id === action.parentId
+          ? {
+            ...post,
+            comments: post.comments.filter(comment => comment.id !== action.commentId)
           }
           : post
       ));

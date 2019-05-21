@@ -111,3 +111,15 @@ export function vote(path, id, option) {
     }
   ).then(data => data.json());
 }
+
+export function del(path, id) {
+  return fetch(
+    "http://localhost:3001/"+path+"/"+id,
+    {
+      method: "DELETE",
+      headers: {
+        "Authorization": "dummy"
+      }
+    }
+  ).then(data => data.json());
+}

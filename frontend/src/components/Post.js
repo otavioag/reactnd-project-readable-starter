@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Comment, Icon, Tooltip } from 'antd';
+import {Card, Comment, Icon, Tooltip, Popconfirm, notification} from 'antd';
 import { fetchComments } from '../actions/comments';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PostComments from './PostComments';
 import Editor from './Editor';
-import { updatePost, votePost } from '../actions/posts';
+import { updatePost, votePost, deletePost } from '../actions/posts';
 
 class Post extends Component {
 
@@ -20,12 +20,6 @@ class Post extends Component {
   componentDidMount() {
     this.props.fetchComments(this.props.post.id);
   }
-
-  like = (e) => {
-    e.preventDefault();
-    console.log('e');
-    e.stopPropagation();
-  };
 
   toggleComments = (e) => {
     e.preventDefault();
@@ -71,6 +65,19 @@ class Post extends Component {
       ...this.state,
       body: e.target.value
     });
+  };
+
+  deletePost = () => {
+    this.props.deletePost(this.props.post.id)
+      .then(() => {
+        if (this.props.disableClick) { //if in individual post page
+          this.props.history.push('/');
+        }
+        notification.open({
+          message: 'Success!',
+          description: 'Post deleted!'
+        });
+      });
   };
 
   render() {
@@ -122,13 +129,17 @@ class Post extends Component {
           />
         </Tooltip>
         <span style={{paddingLeft: 8}}/>
-        <Tooltip title='Delete'>
+        <Popconfirm
+          title='Delete?'
+          okText='Yes'
+          cancelText='No'
+          onConfirm={this.deletePost}
+        >
           <Icon
             type='delete'
             theme='outlined'
-            onClick={this.like}
           />
-        </Tooltip>
+        </Popconfirm>
       </span>
     ];
 
@@ -177,7 +188,8 @@ class Post extends Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchComments: (postId) => dispatch(fetchComments(postId)),
   updatePost: (postId, title, body) => dispatch(updatePost(postId, title, body)),
-  votePost: (postId, option) => dispatch(votePost(postId, option))
+  votePost: (postId, option) => dispatch(votePost(postId, option)),
+  deletePost: (postId) => dispatch(deletePost(postId))
 });
 
-export default connect(null, mapDispatchToProps)(Post);
+export default withRouter(connect(null, mapDispatchToProps)(Post));

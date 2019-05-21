@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Comment, Icon, Tooltip } from 'antd';
+import { Comment, Icon, notification, Popconfirm, Tooltip } from 'antd';
 import Editor from './Editor';
 import { connect } from 'react-redux';
-import { updateComment, voteComment } from '../actions/comments';
+import { updateComment, voteComment, deleteComment } from '../actions/comments';
 
 class SingleComment extends Component {
 
@@ -40,6 +40,16 @@ class SingleComment extends Component {
       ...this.state,
       body: e.target.value
     });
+  };
+
+  deleteComment = () => {
+    this.props.deleteComment(this.props.comment.id, this.props.comment.parentId)
+      .then(() => {
+        notification.open({
+          message: 'Success!',
+          description: 'Comment deleted!'
+        });
+      });
   };
 
   render() {
@@ -82,13 +92,17 @@ class SingleComment extends Component {
           />
         </Tooltip>
         <span style={{paddingLeft: 8}}/>
-        <Tooltip title='Delete'>
+        <Popconfirm
+          title='Delete?'
+          okText='Yes'
+          cancelText='No'
+          onConfirm={this.deleteComment}
+        >
           <Icon
             type='delete'
             theme='outlined'
-            onClick={this.like}
           />
-        </Tooltip>
+        </Popconfirm>
       </span>
     ];
 
@@ -115,7 +129,8 @@ class SingleComment extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   updateComment: (commentId, parentId, body) => dispatch(updateComment(commentId, parentId, body)),
-  voteComment: (commentId, parentId, option) => dispatch(voteComment(commentId, parentId, option))
+  voteComment: (commentId, parentId, option) => dispatch(voteComment(commentId, parentId, option)),
+  deleteComment: (commentId, parentId) => dispatch(deleteComment(commentId, parentId))
 });
 
 export default connect(null, mapDispatchToProps)(SingleComment);
