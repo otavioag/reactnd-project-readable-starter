@@ -1,9 +1,10 @@
-import { getComments, createComment as crtComment } from '../utils/api';
+import { getComments, createComment as crtComment, vote } from '../utils/api';
 import { updateComment as updComment } from '../utils/api';
 import { setPostComments } from './posts';
 
 export const UPDATE_COMMENT = 'UPDATE_COMMENT';
 export const SAVE_COMMENT = 'SAVE_COMMENT';
+export const VOTE_COMMENT = 'VOTE_COMMENT';
 
 export function fetchComments(postId) {
   return (dispatch) => {
@@ -43,3 +44,12 @@ export function saveComment(comment) {
   };
 }
 
+export function voteComment(commentId, parentId, option) {
+  vote('comments', commentId, option);
+  return {
+    type: VOTE_COMMENT,
+    commentId,
+    parentId,
+    option
+  }
+}

@@ -95,3 +95,19 @@ export function createPost(post) {
     }
   ).then(data => data.json());
 }
+
+export function vote(path, id, option) {
+  return fetch(
+    "http://localhost:3001/"+path+"/"+id,
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "dummy",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        option: option
+      })
+    }
+  ).then(data => data.json());
+}

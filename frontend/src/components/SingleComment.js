@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Comment, Icon, Tooltip } from 'antd';
 import Editor from './Editor';
 import { connect } from 'react-redux';
-import { updateComment } from '../actions/comments';
+import { updateComment, voteComment } from '../actions/comments';
 
 class SingleComment extends Component {
 
@@ -44,15 +44,17 @@ class SingleComment extends Component {
 
   render() {
     const { voteScore } = this.props.comment;
-    const action = 'none';
 
     const actions = [
       <span>
         <Tooltip title='Upvote'>
           <Icon
             type='like'
-            theme={action === 'upvote' ? 'filled' : 'outlined'}
-            onClick={this.like}
+            theme='outlined'
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.voteComment(this.props.comment.id, this.props.comment.parentId, 'upVote');
+            }}
           />
         </Tooltip>
       </span>,
@@ -60,8 +62,11 @@ class SingleComment extends Component {
         <Tooltip title='Downvote'>
           <Icon
             type='dislike'
-            theme={action === 'downvote' ? 'filled' : 'outlined'}
-            onClick={this.dislike}
+            theme='outlined'
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.voteComment(this.props.comment.id, this.props.comment.parentId, 'downVote');
+            }}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{voteScore}</span>
@@ -109,7 +114,8 @@ class SingleComment extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  updateComment: (commentId, parentId, body) => dispatch(updateComment(commentId, parentId, body))
+  updateComment: (commentId, parentId, body) => dispatch(updateComment(commentId, parentId, body)),
+  voteComment: (commentId, parentId, option) => dispatch(voteComment(commentId, parentId, option))
 });
 
 export default connect(null, mapDispatchToProps)(SingleComment);

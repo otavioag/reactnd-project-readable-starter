@@ -1,10 +1,11 @@
-import { getPosts, updatePost as updPost } from '../utils/api';
+import { getPosts, updatePost as updPost, vote } from '../utils/api';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
 export const SET_POSTS = 'SET_POSTS';
 export const SET_POST_COMMENTS = 'SET_POST_COMMENTS';
 export const UPDATE_POST = 'UPDATE_POST';
 export const SORT_POSTS = 'SORT_POSTS';
+export const VOTE_POST = 'VOTE_POST';
 
 export function fetchPosts() {
   return (dispatch) => {
@@ -51,4 +52,13 @@ export function sortPosts(sortBy, sortOrder) {
     });
     return Promise.resolve();
   };
+}
+
+export function votePost(postId, option) {
+  vote('posts', postId, option);
+  return {
+    type: VOTE_POST,
+    postId,
+    option
+  }
 }

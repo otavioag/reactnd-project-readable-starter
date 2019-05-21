@@ -26,7 +26,7 @@ class Menu extends Component {
   render() {
     if (this.props.hide) return null;
     return(
-      <div style={{width: "80%", marginTop: "20px", display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "baseline"}}>
+      <div style={{width: "80%", marginTop: "20px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "baseline"}}>
         <div style={{display: "flex", flexDirection: "row", alignItems:"baseline"}}>
           <h5 style={{marginRight: "20px"}}>Sort by:</h5>
           <Radio.Group style={{marginRight: "20px"}} defaultValue='date' onChange={(e) => this.changeSort(e, 'sortBy')}>

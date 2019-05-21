@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PostComments from './PostComments';
 import Editor from './Editor';
-import { updatePost } from '../actions/posts';
+import { updatePost, votePost } from '../actions/posts';
 
 class Post extends Component {
 
@@ -76,15 +76,17 @@ class Post extends Component {
   render() {
     const { voteScore } = this.props.post;
     const commentNumber = this.props.post.comments === undefined ? 0 : this.props.post.comments.length;
-    const action = 'none';
 
     const actions = [
       <span>
         <Tooltip title='Upvote'>
           <Icon
             type='like'
-            theme={action === 'upvote' ? 'filled' : 'outlined'}
-            onClick={this.like}
+            theme='outlined'
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.votePost(this.props.post.id, 'upVote');
+            }}
           />
         </Tooltip>
       </span>,
@@ -92,8 +94,11 @@ class Post extends Component {
         <Tooltip title='Downvote'>
           <Icon
             type='dislike'
-            theme={action === 'downvote' ? 'filled' : 'outlined'}
-            onClick={this.dislike}
+            theme='outlined'
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.votePost(this.props.post.id, 'downVote');
+            }}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{voteScore}</span>
@@ -171,7 +176,8 @@ class Post extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchComments: (postId) => dispatch(fetchComments(postId)),
-  updatePost: (postId, title, body) => dispatch(updatePost(postId, title, body))
+  updatePost: (postId, title, body) => dispatch(updatePost(postId, title, body)),
+  votePost: (postId, option) => dispatch(votePost(postId, option))
 });
 
 export default connect(null, mapDispatchToProps)(Post);
